@@ -1,22 +1,33 @@
-"use client";
-
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { auth, signIn, signOut } from "@/lib/auth";
 
-function AuthButton() {
-    const { data: session } = useSession();
-    if (session) {
+async function AuthButton() {
+    const session = await auth();
+    if (!session) {
         return (
-            <button onClick={() => signOut()}>Sign out</button>
+            <form
+                action={async () => {
+                    "use server"
+                    await signIn()
+                }}
+            >
+                <button>Sign In</button>
+            </form>
         );
     }
     return (
-        <button onClick={() => signIn()}>Sign in</button>
+        <form
+            action={async () => {
+                "use server"
+                await signOut()
+            }}
+        >
+            <button>Sign Out</button>
+        </form>
     );
 }
 
-export default function Navbar() {
-    const { data: session } = useSession();
+export default async function Navbar() {
     return (
         <nav className="flex w-full justify-between items-center">
             <ul className="flex justify-between items-center gap-4">
@@ -37,7 +48,6 @@ export default function Navbar() {
                 </li>
             </ul>
             <div className="flex justify-end gap-4">
-                {session?.user?.name ?? "Logged out"}
                 <AuthButton />
             </div>
         </nav>
