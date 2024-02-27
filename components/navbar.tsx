@@ -4,7 +4,7 @@ import { auth, signIn, signOut } from "@/lib/auth";
 
 async function AuthButton() {
     const session = await auth();
-    if (!session) {
+    if (!session?.user) {
         return (
             <form
                 action={async () => {
@@ -23,7 +23,7 @@ async function AuthButton() {
                 await signOut()
             }}
         >
-            <Image src={session!.user!.image as string} alt="User Profile" width={32} height={32} />
+            {session.user.image && <Image src={session.user.image} alt={session.user.name ?? ""} width={32} height={32} />}
             <button>Sign Out</button>
         </form>
     );
