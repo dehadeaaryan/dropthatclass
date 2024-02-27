@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { auth, signIn, signOut } from "@/lib/auth";
 
 async function AuthButton() {
@@ -22,6 +23,7 @@ async function AuthButton() {
                 await signOut()
             }}
         >
+            <Image src={session!.user!.image as string} alt="User Profile" width={32} height={32} />
             <button>Sign Out</button>
         </form>
     );
