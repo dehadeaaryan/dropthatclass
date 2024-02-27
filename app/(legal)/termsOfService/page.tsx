@@ -2,6 +2,6 @@
 
 export default function Page() {
     return (
-        <h1>About</h1>
+        <h1>Terms of Service</h1>
     )
 }
