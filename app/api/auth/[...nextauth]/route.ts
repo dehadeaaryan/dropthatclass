@@ -6,7 +6,7 @@ import GoogleProvider from "next-auth/providers/google";
 type CombineRequest = Request & NextApiRequest;
 type CombineResponse = Response & NextApiResponse;
 
-export const handler = (req: CombineRequest, res: CombineResponse) => NextAuth(req, res, {
+const handler = (req: CombineRequest, res: CombineResponse) => NextAuth(req, res, {
     providers: [
         GithubProvider({
             clientId: process.env.GITHUB_ID ?? "",
