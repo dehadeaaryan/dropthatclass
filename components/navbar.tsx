@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { SessionProvider } from "next-auth/react"
 import { auth, signIn, signOut } from "@/lib/auth";
 
 async function AuthButton() {
@@ -16,16 +16,23 @@ async function AuthButton() {
             </form>
         );
     }
+    session.user = {
+        name: session.user.name,
+        email: session.user.email,
+        image: session.user.image,
+    }
     return (
-        <form
-            action={async () => {
-                "use server"
-                await signOut()
-            }}
-        >
-            {session.user.image && <img src={session.user.image} alt={session.user.name ?? ""} />}
-            <button>Sign Out</button>
-        </form>
+        <SessionProvider session={session}>
+            <form
+                action={async () => {
+                    "use server"
+                    await signOut()
+                }}
+            >
+                {session.user.image && <img src={session.user.image} alt={session.user.name ?? ""} />}
+                <button>Sign Out</button>
+            </form>
+        </SessionProvider>
     );
 }
 
