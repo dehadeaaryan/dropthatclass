@@ -23,7 +23,7 @@ async function AuthButton() {
                 await signOut()
             }}
         >
-            {session.user.image && <Image src={session.user.image} alt={session.user.name ?? ""} width={32} height={32} />}
+            {session.user.image && <img src={session.user.image} alt={session.user.name ?? ""} />}
             <button>Sign Out</button>
         </form>
     );
