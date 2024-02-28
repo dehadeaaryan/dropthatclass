@@ -6,7 +6,7 @@ import Google from "next-auth/providers/google"
 export const config = {
     theme: {
         brandColor: "#000000",
-        logo: "https://raw.githubusercontent.com/dehadeaaryan/dropthatclass/main/public/icon.png",
+        logo: "https://raw.githubusercontent.com/dehadeaaryan/dropthatclass/main/public/logo.png",
         colorScheme: "auto",
     },
     providers: [
