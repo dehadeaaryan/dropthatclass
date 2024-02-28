@@ -19,12 +19,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={inter.className}>
-                <div className="ButtonTheme flex flex-col h-screen bg-black text-white">
-                            <Header />
-                            {children}
-                            <Footer />
-                </div>
+            <body className={`flex flex-col min-h-screen bg-black text-white ${inter.className}`}>
+                    <Header />
+                    {children}
+                    <Footer />
             </body>
         </html>
     );

@@ -13,7 +13,7 @@ export default function Header() {
         <header className="sticky flex items-center justify-between border-b bottom-white gap-12 px-4">
             <div className="flex flex-1 items-center justify-start gap-12">
                 <h1 className="text-4xl font-bold text-center">
-                    <Link href={"/"}><Image src="/logo.png" alt="DTC" width={100} height={100} /></Link>
+                    <Link href={"/"}><Image priority={true} src="/logo.png" alt="DTC" width={100} height={100} /></Link>
                 </h1>
                 <ul className="flex h-full gap-4">
                     {links.map((link) => (
