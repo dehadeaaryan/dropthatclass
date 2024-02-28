@@ -3,10 +3,9 @@ import Image from "next/image";
 import AuthButton from "@/components/authButton";
 
 let links = [
-    { path: "/about", name: "About" },
-    { path: "/privacyPolicy", name: "Privacy Policy" },
-    { path: "/termsOfService", name: "Terms of Service" },
     { path: "/posts", name: "Posts" },
+    { path: "/about", name: "About" },
+    { path: "/contact", name: "Contact" },
 ];
 
 export default function Header() {

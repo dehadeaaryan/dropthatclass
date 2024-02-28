@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,11 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <main className="flex flex-col min-h-screen">
-                    <Header />
-                    {children}
-                </main>
+                <div className="ButtonTheme flex flex-col h-screen bg-black">
+                            <Header />
+                            {children}
+                            <Footer />
+                </div>
             </body>
         </html>
     );

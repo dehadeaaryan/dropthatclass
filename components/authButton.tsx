@@ -1,5 +1,5 @@
 import { auth, signIn, signOut } from "@/lib/auth";
-import Button from "@/components/ui/button";
+import Button from "./ui/button";
 
 export default async function AuthButton() {
     const session = await auth();
