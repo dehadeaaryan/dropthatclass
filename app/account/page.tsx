@@ -21,7 +21,7 @@ export default async function Page() {
         return (
             <div className="flex flex-1 flex-col items-center justify-between px-8">
                 <div className="flex flex-row w-full justify-between items-center h-36">
-                    <h2 className="text-4xl font-bold">{user.name}'s account</h2>
+                    <h2 className="text-4xl font-bold">{user.name}&apos;s account</h2>
                     <img className="w-20 h-20 rounded-full border-4 border-white" src={user.image} alt={user.name} />
                 </div>
                 <div className="flex flex-row gap-4 text-2xl items-center">
