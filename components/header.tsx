@@ -11,7 +11,7 @@ let links = [
 
 export default function Header() {
     return (
-        <header className="sticky flex items-center justify-between border-b bottom-white gap-12">
+        <header className="sticky flex items-center justify-between border-b bottom-white gap-12 px-4">
             <div className="flex flex-1 items-center justify-start gap-12">
                 <h1 className="text-4xl font-bold text-center">
                     <Link href={"/"}><Image src="/logo.png" alt="DTC" width={100} height={100} /></Link>
@@ -24,9 +24,7 @@ export default function Header() {
                     ))}
                 </ul>
             </div>
-            <div className="flex gap-4 px-4">
-                <AuthButton />
-            </div>
+            <AuthButton />
         </header>
     );
 }
