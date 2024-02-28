@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import AuthButton from "@/components/authButton";
+import { auth } from "@/lib/auth";
 
 let links = [
     { path: "/posts", name: "Posts" },
@@ -8,7 +9,8 @@ let links = [
     { path: "/contact", name: "Contact" },
 ];
 
-export default function Header() {
+export default async function Header() {
+    const session = await auth();
     return (
         <header className="sticky flex items-center justify-between border-b bottom-white gap-12 px-4">
             <div className="flex flex-1 items-center justify-start gap-12">
@@ -23,7 +25,10 @@ export default function Header() {
                     ))}
                 </ul>
             </div>
-            <AuthButton />
+            <div className="flex items-center justify-end gap-4">
+                {!!session?.user && <Link href={"/account"}>Account</Link>}
+                <AuthButton />
+            </div>
         </header>
     );
 }
