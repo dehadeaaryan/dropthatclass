@@ -20,7 +20,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <div className="ButtonTheme flex flex-col h-screen bg-black">
+                <div className="ButtonTheme flex flex-col h-screen bg-black text-white">
                             <Header />
                             {children}
                             <Footer />
