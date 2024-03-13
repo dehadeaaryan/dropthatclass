@@ -45,7 +45,7 @@ export const config = {
             // const { pathname } = request.nextUrl
             return true
         },
-        async signIn({ user, account, profile, email, credentials }) {
+        signIn({ user, account, profile, email, credentials }) {
             const isAllowedToSignIn = true
             fetch(`${process.env.LOCATION}/api/data/user/${user.email}`)
             .then((res) => res.json())
