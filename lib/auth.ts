@@ -49,9 +49,9 @@ export const config = {
             const isAllowedToSignIn = true
             fetch(`${process.env.LOCATION}/api/data/user/${user.email}`)
             .then((res) => res.json())
-            .then((data) => {
+            .then(async (data) => {
                 if (!data) {
-                    fetch(`${process.env.LOCATION}/api/data/user`, {
+                    await fetch(`${process.env.LOCATION}/api/data/user`, {
                         method: "POST",
                         body: JSON.stringify({
                             email: user.email,
@@ -65,8 +65,6 @@ export const config = {
                             "Content-Type": "application/json",
                         },
                     })
-                    .then((response) => response.json())
-                    .then((data) => { console.error(data) })
                 }
             })
 
