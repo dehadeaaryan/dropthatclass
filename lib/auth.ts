@@ -47,24 +47,43 @@ export const config = {
         },
         async signIn({ user, account, profile, email, credentials }) {
             const isAllowedToSignIn = true
-            console.log(`${process.env.LOCATION}/api/data/user/${user.email}`)
-            const response = await fetch(`${process.env.LOCATION}/api/data/user/${user.email}`)
-            if (response.status === 404) {
-                const newUser = await fetch(`${process.env.LOCATION}/api/data/user`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        email: user.email,
-                        name: user.name,
-                        username: newUsername(user.email!),
-                        image: user.image,
-                        university: "Unknown",
-                        createdAt: new Date(),
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-            }
+            fetch(`${process.env.LOCATION}/api/data/user/${user.email}`).then((res) => res.json()).then((data) => {
+                if (!data) {
+                    fetch(`${process.env.LOCATION}/api/data/user`, {
+                        method: "POST",
+                        body: JSON.stringify({
+                            email: user.email,
+                            name: user.name,
+                            username: newUsername(user.email!),
+                            image: user.image,
+                            university: "Unknown",
+                            createdAt: new Date(),
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }).catch((error) => {
+                        console.error("Error:", error)
+                    })
+                }
+            })
+
+            // if (response.status === 404) {
+            //     const newUser = await fetch(`${process.env.LOCATION}/api/data/user`, {
+            //         method: "POST",
+            //         body: JSON.stringify({
+            //             email: user.email,
+            //             name: user.name,
+            //             username: newUsername(user.email!),
+            //             image: user.image,
+            //             university: "Unknown",
+            //             createdAt: new Date(),
+            //         }),
+            //         headers: {
+            //             "Content-Type": "application/json",
+            //         },
+            //     })
+            // }
 
             if (isAllowedToSignIn) {
                 return true
