@@ -11,9 +11,9 @@ export default function Account({ user }: { user: UserType }) {
     const [username, setUsername] = useState(user.username);
     const [university, setUniversity] = useState(user.university);
 
-    async function handleUsernameChange(e: any) {
+    function handleUsernameChange(e: any) {
         const newUsernameVar = newUsername(user.email!);
-        const response = await fetch(`api/data/user/`, {
+        fetch(`api/data/user/`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -23,17 +23,22 @@ export default function Account({ user }: { user: UserType }) {
                 username: newUsernameVar,
                 university: user.university,
             }),
-        });
-        if (response.status === 200) {
-            setUsername(newUsernameVar);
-        } else {
-            console.error("Username change failed");
-        }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    setUsername(newUsernameVar);
+                } else {
+                    console.error("Username change failed");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
     }
 
-    async function handleUniversityChange(e: any) {
+    function handleUniversityChange(e: any) {
         const newUniversity = e.target.value;
-        const response = await fetch(`api/data/user/`, {
+        fetch(`api/data/user/`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -43,12 +48,17 @@ export default function Account({ user }: { user: UserType }) {
                 username: user.username,
                 university: newUniversity,
             }),
-        });
-        if (response.status === 200) {
-            setUniversity(newUniversity);
-        } else {
-            console.error("University change failed");
-        }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    setUniversity(newUniversity);
+                } else {
+                    console.error("University change failed");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
     }
 
 
