@@ -66,8 +66,7 @@ export const config = {
             // }
             fetch(`${process.env.LOCATION}/api/data/user/${user.email}`)
                 .then((response) => {
-                    if (response.status === 404) {
-                        return fetch(`${process.env.LOCATION}/api/data/user`, {
+                        (response.status === 404) && fetch(`${process.env.LOCATION}/api/data/user`, {
                             method: "POST",
                             body: JSON.stringify({
                                 email: user.email,
@@ -80,14 +79,7 @@ export const config = {
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                        }).then((newUserResponse) => {
-                            return true;
-                        });
-                    } else {
-                        return true;
-                    }
-                })
-                .then((userData) => {
+                        }).then((newUserResponse) => newUserResponse.json());
                 })
                 .catch((error) => {
                     console.error("Error:", error);
