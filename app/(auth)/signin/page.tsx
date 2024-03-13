@@ -1,7 +1,7 @@
 'use client'
 import { config, signIn } from "@/lib/auth"
 
-export default async function SignIn() {
+export default function SignIn() {
     const providers = config.providers
     return (
         <>
