@@ -1,7 +1,7 @@
 "use client"
 
 import { UserType } from "@/types/user";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "./ui/button";
 import newUsername from "@/lib/usernameGenerator";
 import universities from '@/data/universities.json'; // Importing options from JSON file
