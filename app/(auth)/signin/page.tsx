@@ -1,10 +1,17 @@
-import { auth, signIn } from "@/lib/auth";
+'use client'
+import { config, signIn } from "@/lib/auth"
 
-// Create a sign in page with buttons for google and github
-export default function SignIn() {
+export default async function SignIn() {
+    const providers = config.providers
     return (
-        <div>
-            <h1>Sign in</h1>
-        </div>
+        <>
+            {providers && Object.values(providers).map((provider) => (
+                <div key={provider.name}>
+                    <button onClick={() => signIn(provider.name)}>
+                        Sign in with {provider.name}
+                    </button>
+                </div>
+            ))}
+        </>
     )
 }
