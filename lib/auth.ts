@@ -3,7 +3,7 @@ import type { NextAuthConfig } from "next-auth"
 import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
-import newUsername from "./usernameGenerator"
+import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from "./mongodb"
 
 export const config = {
@@ -12,6 +12,14 @@ export const config = {
         logo: "https://raw.githubusercontent.com/dehadeaaryan/dropthatclass/main/public/logo.png",
         colorScheme: "auto",
     },
+    adapter: MongoDBAdapter(clientPromise, {
+        databaseName: "test",
+        collections: {
+            Users: "Users",
+            Sessions: "Sessions",
+            Accounts: "Accounts",
+        },
+    }),
     providers: [
         GitHub, Google,
         CredentialsProvider({
@@ -47,63 +55,26 @@ export const config = {
             return true
         },
         signIn({ user, account, profile, email, credentials }) {
-            const isAllowedToSignIn = true
-            fetch(`${process.env.LOCATION}/api/data/user/${user.email}`)
-            .then((res) => res.json())
-            .then(async (data) => {
-                if (!data) {
-                    const client = await clientPromise
-                    const db = client.db("test")
-                    const users = db.collection("Users")
-                    users.insertOne({
-                        email: user.email,
-                        name: user.name,
-                        username: newUsername(user.email!),
-                        image: user.image,
-                        university: "Unknown",
-                        createdAt: new Date(),
+            fetch(`${process.env.LOCATION}/api/data/user/${user.email}`).then((res) => res.json()).then((res) => {
+                if (!res.username) {
+                    fetch(`${process.env.LOCATION}/api/data/user/`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            email: user.email,
+                            username: user.email!.split("@")[0],
+                            university: "Unknown",
+                        }),
                     })
-                    // await fetch(`${process.env.LOCATION}/api/data/user`, {
-                    //     method: "POST",
-                    //     body: JSON.stringify({
-                    //         email: user.email,
-                    //         name: user.name,
-                    //         username: newUsername(user.email!),
-                    //         image: user.image,
-                    //         university: "Unknown",
-                    //         createdAt: new Date(),
-                    //     }),
-                    //     headers: {
-                    //         "Content-Type": "application/json",
-                    //     },
-                    // })
+                        .then(() => true)
+                        .catch((error) => {
+                            console.error("Error:", error);
+                        });
                 }
             })
-
-            // if (response.status === 404) {
-            //     const newUser = await fetch(`${process.env.LOCATION}/api/data/user`, {
-            //         method: "POST",
-            //         body: JSON.stringify({
-            //             email: user.email,
-            //             name: user.name,
-            //             username: newUsername(user.email!),
-            //             image: user.image,
-            //             university: "Unknown",
-            //             createdAt: new Date(),
-            //         }),
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //         },
-            //     })
-            // }
-
-            if (isAllowedToSignIn) {
-                return true
-            } else {
-                return false
-                // Or return a URL to redirect to:
-                // return '/unauthorized'
-            }
+            return true
         }
     },
 } satisfies NextAuthConfig

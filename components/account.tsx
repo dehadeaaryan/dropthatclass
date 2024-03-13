@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 import Button from "./ui/button";
 import newUsername from "@/lib/usernameGenerator";
 import universities from '@/data/universities.json'; // Importing options from JSON file
+import { signOut } from "next-auth/react";
 
 
 export default function Account({ user }: { user: UserType }) {
     const [username, setUsername] = useState(user.username);
-    const [university, setUniversity] = useState(user.university);
+    const [university, setUniversity] = useState(user.university != null ? user.university : "Unknown");
 
     function handleUsernameChange(e: any) {
         const newUsernameVar = newUsername(user.email!);
@@ -90,7 +91,24 @@ export default function Account({ user }: { user: UserType }) {
                 </div>
                 <div className="flex flex-row gap-4 text-2xl items-center">
                     <label htmlFor="createdAt">With us since: </label>
-                    <p id="createdAt">{user.createdAt.getFullYear()}</p>
+                    <p id="createdAt">{user.createdAt ? user.createdAt.getFullYear() : 2024}</p>
+                </div>
+                <div className="flex flex-row gap-4 text-2xl items-center">
+                    <form onSubmit={() => {
+                        const savedUser = user;
+                        signOut({ callbackUrl: "/" });
+                        fetch("/api/data/user", {
+                            method: "DELETE",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                email: savedUser.email,
+                            }),
+                        }).then(() => true)
+                    }} className="flex flex-row items-center justify-center gap-4">
+                        <Button>Delete account</Button>
+                    </form>
                 </div>
             </div>
         </div>
