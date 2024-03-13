@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import type { NextAuthConfig } from "next-auth"
-import GitHub from "next-auth/providers/github"
-import Google from "next-auth/providers/google"
+import GitHub, { GitHubProfile } from "next-auth/providers/github"
+import Google, { GoogleProfile } from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from "./mongodb"
@@ -21,7 +21,32 @@ export const config = {
         },
     }),
     providers: [
-        GitHub, Google,
+        GitHub({
+            profile(profile: GitHubProfile) {
+                return {
+                    id: profile.id.toString(),
+                    username: profile.email?.split("@")[0] || profile.login,
+                    name: profile.name,
+                    email: profile.email,
+                    image: profile.avatar_url,
+                    university: "Unknown",
+                    createdAt: new Date(),
+                }
+            }
+        }), 
+        Google({
+            profile(profile: GoogleProfile) {
+                return {
+                    id: profile.id,
+                    username: profile.email?.split("@")[0] || profile.name,
+                    name: profile.name,
+                    email: profile.email,
+                    image: profile.picture,
+                    university: "Unknown",
+                    createdAt: new Date(),
+                }
+            }
+        }),
         CredentialsProvider({
             name: "Credentials",
             credentials: {
@@ -55,25 +80,6 @@ export const config = {
             return true
         },
         signIn({ user, account, profile, email, credentials }) {
-            fetch(`${process.env.LOCATION}/api/data/user/${user.email}`).then((res) => res.json()).then((res) => {
-                if (!res.username) {
-                    fetch(`${process.env.LOCATION}/api/data/user/`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            email: user.email,
-                            username: user.email!.split("@")[0],
-                            university: "Unknown",
-                        }),
-                    })
-                        .then(() => true)
-                        .catch((error) => {
-                            console.error("Error:", error);
-                        });
-                }
-            })
             return true
         }
     },
