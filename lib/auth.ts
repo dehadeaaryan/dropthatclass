@@ -4,6 +4,7 @@ import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import newUsername from "./usernameGenerator"
+import clientPromise from "./mongodb"
 
 export const config = {
     theme: {
@@ -51,20 +52,31 @@ export const config = {
             .then((res) => res.json())
             .then(async (data) => {
                 if (!data) {
-                    await fetch(`${process.env.LOCATION}/api/data/user`, {
-                        method: "POST",
-                        body: JSON.stringify({
-                            email: user.email,
-                            name: user.name,
-                            username: newUsername(user.email!),
-                            image: user.image,
-                            university: "Unknown",
-                            createdAt: new Date(),
-                        }),
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
+                    const client = await clientPromise
+                    const db = client.db("test")
+                    const users = db.collection("Users")
+                    users.insertOne({
+                        email: user.email,
+                        name: user.name,
+                        username: newUsername(user.email!),
+                        image: user.image,
+                        university: "Unknown",
+                        createdAt: new Date(),
                     })
+                    // await fetch(`${process.env.LOCATION}/api/data/user`, {
+                    //     method: "POST",
+                    //     body: JSON.stringify({
+                    //         email: user.email,
+                    //         name: user.name,
+                    //         username: newUsername(user.email!),
+                    //         image: user.image,
+                    //         university: "Unknown",
+                    //         createdAt: new Date(),
+                    //     }),
+                    //     headers: {
+                    //         "Content-Type": "application/json",
+                    //     },
+                    // })
                 }
             })
 
