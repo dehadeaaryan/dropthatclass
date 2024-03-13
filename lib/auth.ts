@@ -47,6 +47,7 @@ export const config = {
         },
         async signIn({ user, account, profile, email, credentials }) {
             const isAllowedToSignIn = true
+            console.log(`${process.env.LOCATION}/api/data/user/${user.email}`)
             const response = await fetch(`${process.env.LOCATION}/api/data/user/${user.email}`)
             if (response.status === 404) {
                 const newUser = await fetch(`${process.env.LOCATION}/api/data/user`, {
