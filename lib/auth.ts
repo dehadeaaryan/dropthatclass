@@ -47,25 +47,25 @@ export const config = {
                 }
             }
         }),
-        CredentialsProvider({
-            name: "Credentials",
-            credentials: {
-                email: { label: "Email", type: "email", placeholder: "example@example.com" },
-                password: { label: "Password", type: "password" },
-            },
-            async authorize(credentials, request) {
-                if (!credentials || !credentials.email || !credentials.password) {
-                    return null
-                }
+        // CredentialsProvider({
+        //     name: "Credentials",
+        //     credentials: {
+        //         email: { label: "Email", type: "email", placeholder: "example@example.com" },
+        //         password: { label: "Password", type: "password" },
+        //     },
+        //     async authorize(credentials, request) {
+        //         if (!credentials || !credentials.email || !credentials.password) {
+        //             return null
+        //         }
 
-                const user = await fetch(`${process.env.LOCATION}/api/data/user/${credentials.email}`).then((res) => res.json())
-                if (!user || user.password !== credentials.password) {
-                    return null
-                }
-                const { password, ...rest } = user
-                return rest
-            }
-        }),
+        //         const user = await fetch(`${process.env.LOCATION}/api/data/user/${credentials.email}`).then((res) => res.json())
+        //         if (!user || user.password !== credentials.password) {
+        //             return null
+        //         }
+        //         const { password, ...rest } = user
+        //         return rest
+        //     }
+        // }),
     ],
     // pages: {
     //     signIn: "/signin",
