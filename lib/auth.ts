@@ -66,7 +66,7 @@ export const config = {
                         },
                     })
                     .then((response) => response.json())
-                    .then((data) => { return !!data })
+                    .then((data) => { console.error(data) })
                 }
             })
 
