@@ -47,7 +47,7 @@ export const config = {
         },
         async signIn({ user, account, profile, email, credentials }) {
             const isAllowedToSignIn = true
-            const response = await fetch(`${process.env.LOCATION}/api/data/user/${user.email}`)
+            // const response = await fetch(`${process.env.LOCATION}/api/data/user/${user.email}`)
             // if (response.status === 404) {
             //     fetch(`${process.env.LOCATION}/api/data/user`, {
             //         method: "POST",
@@ -64,14 +64,43 @@ export const config = {
             //         },
             //     }).then((res) => res.json())
             // }
+            fetch(`${process.env.LOCATION}/api/data/user/${user.email}`)
+                .then((response) => {
+                    if (response.status === 404) {
+                        return fetch(`${process.env.LOCATION}/api/data/user`, {
+                            method: "POST",
+                            body: JSON.stringify({
+                                email: user.email,
+                                name: user.name,
+                                username: newUsername(user.email!),
+                                image: user.image,
+                                university: "Unknown",
+                                createdAt: new Date(),
+                            }),
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }).then((newUserResponse) => {
+                            return true;
+                        });
+                    } else {
+                        return true;
+                    }
+                })
+                .then((userData) => {
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+
             if (isAllowedToSignIn) {
-              return true
+                return true
             } else {
-              return false
-              // Or return a URL to redirect to:
-              // return '/unauthorized'
+                return false
+                // Or return a URL to redirect to:
+                // return '/unauthorized'
             }
-          }
+        }
     },
 } satisfies NextAuthConfig
 
