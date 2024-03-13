@@ -47,7 +47,9 @@ export const config = {
         },
         async signIn({ user, account, profile, email, credentials }) {
             const isAllowedToSignIn = true
-            fetch(`${process.env.LOCATION}/api/data/user/${user.email}`).then((res) => res.json()).then((data) => {
+            fetch(`${process.env.LOCATION}/api/data/user/${user.email}`)
+            .then((res) => res.json())
+            .then((data) => {
                 if (!data) {
                     fetch(`${process.env.LOCATION}/api/data/user`, {
                         method: "POST",
@@ -62,9 +64,9 @@ export const config = {
                         headers: {
                             "Content-Type": "application/json",
                         },
-                    }).catch((error) => {
-                        console.error("Error:", error)
                     })
+                    .then((response) => response.json())
+                    .then((data) => { return !!data })
                 }
             })
 
