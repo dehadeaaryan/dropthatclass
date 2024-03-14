@@ -37,7 +37,7 @@ export const config = {
         Google({
             profile(profile: GoogleProfile) {
                 return {
-                    id: profile.id,
+                    id: profile.sub,
                     username: profile.email?.split("@")[0] || profile.name,
                     name: profile.name,
                     email: profile.email,
