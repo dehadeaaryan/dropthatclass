@@ -37,9 +37,10 @@ export async function DELETE(request: Request) {
     let db = client.db("test");
     let users = db.collection("Users");
     let user = await request.json();
+    let userId = await users.findOne({ email: user.email }).then((res) => res!._id);
     const result = await users.deleteOne({ email: user.email });
     let accounts = db.collection("Accounts");
-    await accounts.deleteOne({ email: user.email });
+    await accounts.deleteOne({ userId: userId });
     return new Response(JSON.stringify(result), {
         headers: { "content-type": "application/json" },
     });
