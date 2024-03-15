@@ -1,6 +1,14 @@
 import clientPromise from "@/lib/mongodb";
+import { auth } from "@/lib/auth";
 
-export async function GET(request: Request) {
+// Way 1
+export const GET = auth(async (request) => {
+    if (!request.auth) {
+        return new Response("Not authorized", {
+            headers: { "content-type": "application/json" },
+            status: 401
+        });
+    }
     const client = await clientPromise;
     const db = client.db("test");
     const col = db.collection("Reviews");
@@ -8,9 +16,17 @@ export async function GET(request: Request) {
     return new Response(JSON.stringify(reviews), {
         headers: { "content-type": "application/json" },
     });
-}
+}) as any;
 
+// Way 2
 export async function POST(request: Request) {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response("Not authorized", {
+            headers: { "content-type": "application/json" },
+            status: 401
+        });
+    }
     const client = await clientPromise;
     const db = client.db("test");
     const col = db.collection("Reviews");
@@ -26,6 +42,13 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response("Not authorized", {
+            headers: { "content-type": "application/json" },
+            status: 401
+        });
+    }
     const client = await clientPromise;
     const db = client.db("test");
     const col = db.collection("Reviews");
@@ -68,6 +91,13 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response("Not authorized", {
+            headers: { "content-type": "application/json" },
+            status: 401
+        });
+    }
     const client = await clientPromise;
     const db = client.db("test");
     const col = db.collection("Reviews");
