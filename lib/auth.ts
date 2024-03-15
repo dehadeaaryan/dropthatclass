@@ -77,6 +77,9 @@ export const config = {
     callbacks: {
         authorized({ request, auth }) {
             // const { pathname } = request.nextUrl
+            // if (pathname === "/about") {
+            //     return !!auth
+            // }
             return true
         },
         signIn({ user, account, profile, email, credentials }) {
