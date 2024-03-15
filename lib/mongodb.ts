@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
 
 // Get the MongoDB URI from the environment variables
 const uri: string = (process.env.MODE === "prod" ? process.env.MONGODB_URI : process.env.TEST_MONGODB_URI) as string;
