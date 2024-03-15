@@ -14,9 +14,12 @@ export async function POST(request: Request) {
     const client = await clientPromise;
     const db = client.db("test");
     const col = db.collection("Reviews");
-    let review = await request.json();
+    const { professor, ...review } = await request.json();
     review.createdAt = new Date();
     const result = await col.insertOne(review);
+    const id = result.insertedId;
+    const professorsReviews = db.collection("ProfessorsReviews");
+    const professorReviewsResult = await professorsReviews.insertOne({ professor: professor, review: id });
     return new Response(JSON.stringify(result), {
         headers: { "content-type": "application/json" },
     });
@@ -57,11 +60,6 @@ export async function PUT(request: Request) {
         return new Response(JSON.stringify(result), {
             headers: { "content-type": "application/json" },
         });
-    } else if (req.func === "comment") {
-        const result = await col.updateOne({ _id: req._id }, { $push: { comments: req.commentId } });
-        return new Response(JSON.stringify(result), {
-            headers: { "content-type": "application/json" },
-        });
     } else {
         return new Response("Invalid function", {
             headers: { "content-type": "application/json" },
@@ -74,11 +72,10 @@ export async function DELETE(request: Request) {
     const db = client.db("test");
     const col = db.collection("Reviews");
     const review = await request.json();
-    const toDelete = await col.findOne({ _id: review._id });
-    if (toDelete && toDelete.comments.length > 0) {
-        const comments = db.collection("Comments");
-        const commentResult = await comments.deleteMany({ _id: { $in: toDelete.comments } });
-    }
+    const comments = db.collection("Comments");
+    const commentResult = await comments.deleteMany({ review: review._id });
+    const professorsReviews = db.collection("ProfessorsReviews");
+    const professorReviewsResult = await professorsReviews.deleteOne({ review: review._id });
     const result = await col.deleteOne({ _id: review._id });
     return new Response(JSON.stringify(result), {
         headers: { "content-type": "application/json" },
