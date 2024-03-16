@@ -4,7 +4,7 @@ import AuthButton from "@/components/authButton";
 import { auth } from "@/lib/auth";
 
 let links = [
-    { path: "/posts", name: "Posts" },
+    { path: "/reviews", name: "Reviews" },
     { path: "/about", name: "About" },
     { path: "/contact", name: "Contact" },
 ];

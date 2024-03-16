@@ -1,55 +1,85 @@
 import clientPromise from "@/lib/mongodb";
 import { auth } from "@/lib/auth";
+import { ObjectId } from "mongodb";
 
 // Way 1
-export const GET = auth(async (request) => {
-    if (!request.auth) {
+export async function GET(request: Request) {
+    const client = await clientPromise;
+    const keyCol = client.db("test").collection("Keys");
+    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
+    if (!key) {
         return new Response("Not authorized", {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    const client = await clientPromise;
+    // const session = await auth();
+    // if (!session || !session?.user) {
+    //     return new Response("Not authorized", {
+    //         headers: { "content-type": "application/json" },
+    //         status: 401
+    //     });
+    // }
     const db = client.db("test");
     const col = db.collection("Reviews");
     const reviews = await col.find().toArray();
     return new Response(JSON.stringify(reviews), {
         headers: { "content-type": "application/json" },
     });
-}) as any;
+}
 
 // Way 2
 export async function POST(request: Request) {
-    const session = await auth();
-    if (!session || !session?.user) {
+    const client = await clientPromise;
+    const keyCol = client.db("test").collection("Keys");
+    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
+    if (!key) {
         return new Response("Not authorized", {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    const client = await clientPromise;
+    // const session = await auth();
+    // if (!session || !session?.user) {
+    //     return new Response("Not authorized", {
+    //         headers: { "content-type": "application/json" },
+    //         status: 401
+    //     });
+    // }
     const db = client.db("test");
     const col = db.collection("Reviews");
     const { professor, ...review } = await request.json();
+    review.author = new ObjectId(review.author as string);
     review.createdAt = new Date();
+    review.reports = 0;
+    review.likes = [];
+    review.dislikes = [];
     const result = await col.insertOne(review);
     const id = result.insertedId;
     const professorsReviews = db.collection("ProfessorsReviews");
-    const professorReviewsResult = await professorsReviews.insertOne({ professor: professor, review: id });
+    const professorReviewsResult = await professorsReviews.insertOne({ professor: new ObjectId(professor as string), review: id });
     return new Response(JSON.stringify(result), {
         headers: { "content-type": "application/json" },
     });
 }
 
 export async function PUT(request: Request) {
-    const session = await auth();
-    if (!session || !session?.user) {
+    const client = await clientPromise;
+    const keyCol = client.db("test").collection("Keys");
+    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
+    if (!key) {
         return new Response("Not authorized", {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    const client = await clientPromise;
+    // const session = await auth();
+    // if (!session || !session?.user) {
+    //     return new Response("Not authorized", {
+    //         headers: { "content-type": "application/json" },
+    //         status: 401
+    //     });
+    // }
     const db = client.db("test");
     const col = db.collection("Reviews");
     const req = await request.json();
@@ -90,18 +120,28 @@ export async function PUT(request: Request) {
     }
 }
 
+// Change this to deletemany
 export async function DELETE(request: Request) {
-    const session = await auth();
-    if (!session || !session?.user) {
+    const client = await clientPromise;
+    const keyCol = client.db("test").collection("Keys");
+    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
+    if (!key) {
         return new Response("Not authorized", {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    const client = await clientPromise;
+    // const session = await auth();
+    // if (!session || !session?.user) {
+    //     return new Response("Not authorized", {
+    //         headers: { "content-type": "application/json" },
+    //         status: 401
+    //     });
+    // }
     const db = client.db("test");
     const col = db.collection("Reviews");
     const review = await request.json();
+    review._id = new ObjectId(review._id as string);
     const comments = db.collection("Comments");
     const commentResult = await comments.deleteMany({ review: review._id });
     const professorsReviews = db.collection("ProfessorsReviews");
