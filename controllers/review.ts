@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 
 export async function getAllReviews() {
+    "use server";
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
     const reviews = await fetch(`${process.env.LOCATION}/api/data/review`, {
@@ -13,6 +14,7 @@ export async function getAllReviews() {
 }
 
 export async function getReviewById(id: string) {
+    "use server";
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
     const review = await fetch(`${process.env.LOCATION}/api/data/review/${id}`, {
@@ -25,6 +27,7 @@ export async function getReviewById(id: string) {
 }
 
 export async function createReview(author: string, professor: string, content: string) {
+    "use server";
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
@@ -43,6 +46,7 @@ export async function createReview(author: string, professor: string, content: s
 }
 
 export async function updateReview(id: string, content: string) {
+    "use server";
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
@@ -61,6 +65,7 @@ export async function updateReview(id: string, content: string) {
 }
 
 export async function likeReview(id: string, userId: string) {
+    "use server";
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
@@ -79,6 +84,7 @@ export async function likeReview(id: string, userId: string) {
 }
 
 export async function unlikeReview(id: string, userId: string) {
+    "use server";
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
@@ -97,6 +103,7 @@ export async function unlikeReview(id: string, userId: string) {
 }
 
 export async function dislikeReview(id: string, userId: string) {
+    "use server";
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
@@ -115,6 +122,7 @@ export async function dislikeReview(id: string, userId: string) {
 }
 
 export async function undislikeReview(id: string, userId: string) {
+    "use server";
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
@@ -133,6 +141,7 @@ export async function undislikeReview(id: string, userId: string) {
 }
 
 export async function reportReview(id: string) {
+    "use server";
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
@@ -150,6 +159,7 @@ export async function reportReview(id: string) {
 }
 
 export async function deleteReview(id: string) {
+    "use server";
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
     const result = await fetch(`${process.env.LOCATION}/api/data/review/${id}`, {
