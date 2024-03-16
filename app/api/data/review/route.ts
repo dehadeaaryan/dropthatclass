@@ -83,8 +83,10 @@ export async function PUT(request: Request) {
     const db = client.db("test");
     const col = db.collection("Reviews");
     const req = await request.json();
+    req._id = new ObjectId(req._id as string);
+    req.userId = new ObjectId(req.userId as string);
     if (req.func === "like") {
-        const result = await col.updateOne({ _id: req._id }, { $push: { likes: req.userId } });
+        const result = await col.updateOne({ _id: req._id }, { $addToSet: { likes: req.userId } });
         return new Response(JSON.stringify(result), {
             headers: { "content-type": "application/json" },
         });
@@ -94,7 +96,7 @@ export async function PUT(request: Request) {
             headers: { "content-type": "application/json" },
         });
     } else if (req.func === "dislike") {
-        const result = await col.updateOne({ _id: req._id }, { $push: { dislikes: req.userId } });
+        const result = await col.updateOne({ _id: req._id }, { $addToSet: { dislikes: req.userId } });
         return new Response(JSON.stringify(result), {
             headers: { "content-type": "application/json" },
         });

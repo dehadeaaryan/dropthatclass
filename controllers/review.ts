@@ -42,15 +42,121 @@ export async function createReview(author: string, professor: string, content: s
     return output;
 }
 
+export async function updateReview(id: string, content: string) {
+    const headers = new Headers();
+    headers.append("x-api-key", process.env.API_KEY || "");
+    const body = {
+        _id: id,
+        content: content,
+        func: "edit"
+    }
+    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+        cache: "no-cache",
+        method: "PUT",
+        headers,
+        body: JSON.stringify(body)
+    });
+    const output = await review.json();
+    return output;
+}
+
+export async function likeReview(id: string, userId: string) {
+    const headers = new Headers();
+    headers.append("x-api-key", process.env.API_KEY || "");
+    const body = {
+        _id: id,
+        userId: userId,
+        func: "like"
+    }
+    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+        cache: "no-cache",
+        method: "PUT",
+        headers,
+        body: JSON.stringify(body)
+    });
+    const output = await review.json();
+    return output;
+}
+
+export async function unlikeReview(id: string, userId: string) {
+    const headers = new Headers();
+    headers.append("x-api-key", process.env.API_KEY || "");
+    const body = {
+        _id: id,
+        userId: userId,
+        func: "unlike"
+    }
+    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+        cache: "no-cache",
+        method: "PUT",
+        headers,
+        body: JSON.stringify(body)
+    });
+    const output = await review.json();
+    return output;
+}
+
+export async function dislikeReview(id: string, userId: string) {
+    const headers = new Headers();
+    headers.append("x-api-key", process.env.API_KEY || "");
+    const body = {
+        _id: id,
+        userId: userId,
+        func: "dislike"
+    }
+    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+        cache: "no-cache",
+        method: "PUT",
+        headers,
+        body: JSON.stringify(body)
+    });
+    const output = await review.json();
+    return output;
+}
+
+export async function undislikeReview(id: string, userId: string) {
+    const headers = new Headers();
+    headers.append("x-api-key", process.env.API_KEY || "");
+    const body = {
+        _id: id,
+        userId: userId,
+        func: "undislike"
+    }
+    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+        cache: "no-cache",
+        method: "PUT",
+        headers,
+        body: JSON.stringify(body)
+    });
+    const output = await review.json();
+    return output;
+}
+
+export async function reportReview(id: string) {
+    const headers = new Headers();
+    headers.append("x-api-key", process.env.API_KEY || "");
+    const body = {
+        _id: id,
+        func: "report"
+    }
+    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+        cache: "no-cache",
+        method: "PUT",
+        headers,
+        body: JSON.stringify(body)
+    });
+    const output = await review.json();
+    return output;
+}
+
 export async function deleteReview(id: string) {
     const headers = new Headers();
     headers.append("x-api-key", process.env.API_KEY || "");
-    const review = await fetch(`${process.env.LOCATION}/api/data/review/`, {
+    const result = await fetch(`${process.env.LOCATION}/api/data/review/${id}`, {
         cache: "no-cache",
         method: "DELETE",
-        headers,
-        body: JSON.stringify({ _id: id })
+        headers
     });
-    const output = await review.json();
+    const output = await result.json();
     return output;
 }
