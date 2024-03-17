@@ -14,7 +14,8 @@ export async function GET(request: Request, context: { params: any }) {
     const id = context.params.slug;
     const db = client.db("test");
     const col = db.collection("Reviews");
-    const result = await col.findOne({ _id: id });
+    const objectId = new ObjectId(id as string);
+    const result = await col.findOne({ _id: objectId });
     return new Response(JSON.stringify(result), {
         headers: { "content-type": "application/json" },
     });

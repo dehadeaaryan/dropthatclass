@@ -7,7 +7,7 @@ export default async function Page() {
         await signIn();
     } else {
         return (
-            <Reviews />
+            <Reviews user={session.user} />
         )
     }
 }

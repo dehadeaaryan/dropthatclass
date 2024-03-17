@@ -14,7 +14,7 @@ export function getAllReviews() {
 
 
 export function getReviewById(id: string) {
-    return fetch(`${process.env.LOCATION}/api/data/review/${id}`, {
+    return fetch(`/api/data/review/${id}`, {
         cache: "no-cache",
         method: "GET",
     }).then(response => {
@@ -31,7 +31,7 @@ export async function createReview(author: string, professor: string, content: s
         professor: professor,
         content: content
     }
-    return fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "POST",
         body: JSON.stringify(body),
@@ -49,7 +49,7 @@ export async function updateReview(id: string, content: string) {
         content: content,
         func: "edit"
     }
-    return fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
         body: JSON.stringify(body),
@@ -67,7 +67,7 @@ export async function likeReview(id: string, userId: string) {
         userId: userId,
         func: "like"
     }
-    return fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
         body: JSON.stringify(body),
@@ -86,7 +86,7 @@ export async function unlikeReview(id: string, userId: string) {
         userId: userId,
         func: "unlike"
     }
-    return fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
         body: JSON.stringify(body),
@@ -104,7 +104,7 @@ export async function dislikeReview(id: string, userId: string) {
         userId: userId,
         func: "dislike"
     }
-    return fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
         body: JSON.stringify(body),
@@ -122,7 +122,7 @@ export async function undislikeReview(id: string, userId: string) {
         userId: userId,
         func: "undislike"
     }
-    return fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
         body: JSON.stringify(body),
@@ -139,7 +139,7 @@ export async function reportReview(id: string) {
         _id: id,
         func: "report"
     }
-    return fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
         body: JSON.stringify(body),
@@ -152,7 +152,7 @@ export async function reportReview(id: string) {
 }
 
 export async function deleteReview(id: string) {
-    return fetch(`${process.env.LOCATION}/api/data/review/${id}`, {
+    return fetch(`/api/data/review/${id}`, {
         cache: "no-cache",
         method: "DELETE",
     }).then(response => {
