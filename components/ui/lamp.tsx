@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/cn";
 
 export function LampDemo() {
   return (
@@ -21,6 +21,8 @@ export function LampDemo() {
     </LampContainer>
   );
 }
+
+
 
 export const LampContainer = ({
   children,

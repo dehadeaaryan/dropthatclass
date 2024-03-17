@@ -1,172 +1,164 @@
-import { ObjectId } from "mongodb";
+"use client"
 
-export async function getAllReviews() {
-    "use server";
-    const headers = new Headers();
-    headers.append("x-api-key", process.env.API_KEY || "");
-    const reviews = await fetch(`${process.env.LOCATION}/api/data/review`, {
+export function getAllReviews() {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "GET",
-        headers
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to fetch reviews (Status: ${response.status})`);
+        }
+        return response.json();
     });
-    const output = await reviews.json();
-    return output;
 }
 
-export async function getReviewById(id: string) {
-    "use server";
-    const headers = new Headers();
-    headers.append("x-api-key", process.env.API_KEY || "");
-    const review = await fetch(`${process.env.LOCATION}/api/data/review/${id}`, {
+
+export function getReviewById(id: string) {
+    return fetch(`/api/data/review/${id}`, {
         cache: "no-cache",
         method: "GET",
-        headers
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to fetch review (Status: ${response.status})`);
+        }
+        return response.json();
     });
-    const output = await review.json();
-    return output;
 }
 
 export async function createReview(author: string, professor: string, content: string) {
-    "use server";
-    const headers = new Headers();
-    headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
         author: author,
         professor: professor,
         content: content
     }
-    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "POST",
-        headers,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to create review (Status: ${response.status})`);
+        }
+        return response.json();
     });
-    const output = await review.json();
-    return output;
 }
 
 export async function updateReview(id: string, content: string) {
-    "use server";
-    const headers = new Headers();
-    headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
         _id: id,
         content: content,
         func: "edit"
     }
-    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
-        headers,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to update review (Status: ${response.status})`);
+        }
+        return response.json();
     });
-    const output = await review.json();
-    return output;
 }
 
 export async function likeReview(id: string, userId: string) {
-    "use server";
-    const headers = new Headers();
-    headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
         _id: id,
         userId: userId,
         func: "like"
     }
-    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
-        headers,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to like review (Status: ${response.status})`);
+        }
+        return response.json();
+    
     });
-    const output = await review.json();
-    return output;
 }
 
 export async function unlikeReview(id: string, userId: string) {
-    "use server";
-    const headers = new Headers();
-    headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
         _id: id,
         userId: userId,
         func: "unlike"
     }
-    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
-        headers,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to unlike review (Status: ${response.status})`);
+        }
+        return response.json();
     });
-    const output = await review.json();
-    return output;
 }
 
 export async function dislikeReview(id: string, userId: string) {
-    "use server";
-    const headers = new Headers();
-    headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
         _id: id,
         userId: userId,
         func: "dislike"
     }
-    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
-        headers,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to dislike review (Status: ${response.status})`);
+        }
+        return response.json();
     });
-    const output = await review.json();
-    return output;
 }
 
 export async function undislikeReview(id: string, userId: string) {
-    "use server";
-    const headers = new Headers();
-    headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
         _id: id,
         userId: userId,
         func: "undislike"
     }
-    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
-        headers,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to undislike review (Status: ${response.status})`);
+        }
+        return response.json();
     });
-    const output = await review.json();
-    return output;
 }
 
 export async function reportReview(id: string) {
-    "use server";
-    const headers = new Headers();
-    headers.append("x-api-key", process.env.API_KEY || "");
     const body = {
         _id: id,
         func: "report"
     }
-    const review = await fetch(`${process.env.LOCATION}/api/data/review`, {
+    return fetch(`/api/data/review`, {
         cache: "no-cache",
         method: "PUT",
-        headers,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to report review (Status: ${response.status})`);
+        }
+        return response.json();
     });
-    const output = await review.json();
-    return output;
 }
 
 export async function deleteReview(id: string) {
-    "use server";
-    const headers = new Headers();
-    headers.append("x-api-key", process.env.API_KEY || "");
-    const result = await fetch(`${process.env.LOCATION}/api/data/review/${id}`, {
+    return fetch(`/api/data/review/${id}`, {
         cache: "no-cache",
         method: "DELETE",
-        headers
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to delete review (Status: ${response.status})`);
+        }
+        return response.json();
     });
-    const output = await result.json();
-    return output;
 }
