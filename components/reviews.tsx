@@ -1,9 +1,29 @@
 "use client";
 
-import { AddSvg } from "./svgs";
+import { useEffect, useState } from "react";
+import { AddSvg, UserSvg, ReportSvg, LikeSvg, DislikeSvg } from "./svgs";
+import Button from "./ui/button";
 
-export default function Reviews(props: any) {
-    const reviews = props.reviews;
+function getAllReviews() {
+    return fetch(`/api/data/review`, {
+        method: "GET",
+    }).then((res) => res.json());
+}
+
+export default function Reviews() {
+    const [reviews, setReviews] = useState([{
+        _id: "",
+        likes: [],
+        dislikes: [],
+        reports: 0,
+        content: "",
+        professor: "",
+    }]);
+    useEffect(() => {
+        getAllReviews().then((reviews) => {
+            setReviews(reviews);
+        });
+    }, []);
     return (
         <div className="flex flex-1 flex-col items-center justify-start px-8 py-4 gap-4">
             <div id="reviews-header" className="flex flex-row items-center justify-between w-full">
@@ -15,14 +35,24 @@ export default function Reviews(props: any) {
             <div id="reviews" className="flex flex-col items-center justify-start w-full"></div>
             {reviews.map((review: any) => {
                 return (
-                    <div key={review._id} className="flex flex-col w-full bg-neutral-900 rounded-2xl px-8 py-4">
+                    <div key={review._id} className="flex flex-col w-full bg-neutral-900 rounded-2xl gap-2 px-8 py-4">
                         <div className="flex flex-row items-center justify-between w-full">
-                            <p className="text-2xl font-bold">{review.author}</p>
-                            <p className="text-lg">{review.professor}</p>
+                            <span className="flex flex-row gap-2 items-center">
+                                <UserSvg solid={true} />
+                                <p className="text-sm">{`review.author`}</p>
+                            </span>
+                            <p className="text-sm">{`review.professor`}</p>
                         </div>
                         <p className="text-xl truncate">{review.content}</p>
-                        <p className="text-lg">{review.likes.length}</p>
-                        <p className="text-lg">{review.dislikes.length}</p>
+                        <div className="flex flex-row items-center justify-between w-full">
+                            <Button onClick={() => {}}><ReportSvg solid={true} /></Button>
+                            <div className="flex flex-row items-center justify-end gap-4">
+                                <Button onClick={() => {}}><LikeSvg solid={true} /></Button>
+                                <p className="text-sm">{review.likes.length}</p>
+                                <Button onClick={() => {}}><DislikeSvg solid={true} /></Button>
+                                <p className="text-sm">{review.dislikes.length}</p>
+                            </div>
+                        </div>
                     </div>
                 )
             })}

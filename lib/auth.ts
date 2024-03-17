@@ -20,6 +20,10 @@ export const config = {
             Accounts: "Accounts",
         },
     }),
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60,
+    },
     providers: [
         GitHub({
             profile(profile: GitHubProfile) {

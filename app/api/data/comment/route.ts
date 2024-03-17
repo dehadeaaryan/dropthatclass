@@ -2,22 +2,23 @@ import clientPromise from "@/lib/mongodb";
 import { auth } from "@/lib/auth";
 
 export async function GET(request: Request) {
-    const client = await clientPromise;
-    const keyCol = client.db("test").collection("Keys");
-    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
-    if (!key) {
-        return new Response("Not authorized", {
-            headers: { "content-type": "application/json" },
-            status: 401
-        });
-    }
-    // const session = await auth();
-    // if (!session || !session?.user) {
+    // const client = await clientPromise;
+    // const keyCol = client.db("test").collection("Keys");
+    // const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
+    // if (!key) {
     //     return new Response("Not authorized", {
     //         headers: { "content-type": "application/json" },
     //         status: 401
     //     });
     // }
+    const client = await clientPromise;
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response(JSON.stringify({message: "Not authorized"}), {
+            headers: { "content-type": "application/json" },
+            status: 401
+        });
+    }
     const db = client.db("test");
     const col = db.collection("Comments");
     const comments = await col.find().toArray();
@@ -28,21 +29,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     const client = await clientPromise;
-    const keyCol = client.db("test").collection("Keys");
-    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
-    if (!key) {
-        return new Response("Not authorized", {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response(JSON.stringify({message: "Not authorized"}), {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    // const session = await auth();
-    // if (!session || !session?.user) {
-    //     return new Response("Not authorized", {
-    //         headers: { "content-type": "application/json" },
-    //         status: 401
-    //     });
-    // }
     const db = client.db("test");
     const col = db.collection("Comments");
     let req = await request.json();
@@ -55,21 +48,13 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
     const client = await clientPromise;
-    const keyCol = client.db("test").collection("Keys");
-    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
-    if (!key) {
-        return new Response("Not authorized", {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response(JSON.stringify({message: "Not authorized"}), {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    // const session = await auth();
-    // if (!session || !session?.user) {
-    //     return new Response("Not authorized", {
-    //         headers: { "content-type": "application/json" },
-    //         status: 401
-    //     });
-    // }
     const db = client.db("test");
     const col = db.collection("Comments");
     const req = await request.json();
@@ -92,21 +77,13 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
     const client = await clientPromise;
-    const keyCol = client.db("test").collection("Keys");
-    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
-    if (!key) {
-        return new Response("Not authorized", {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response(JSON.stringify({message: "Not authorized"}), {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    // const session = await auth();
-    // if (!session || !session?.user) {
-    //     return new Response("Not authorized", {
-    //         headers: { "content-type": "application/json" },
-    //         status: 401
-    //     });
-    // }
     const db = client.db("test");
     const col = db.collection("Comments");
     const req = await request.json();

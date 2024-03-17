@@ -4,21 +4,13 @@ import { ObjectId } from "mongodb";
 
 export async function GET(request: Request, context: { params: any }) {
     const client = await clientPromise;
-    const keyCol = client.db("test").collection("Keys");
-    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
-    if (!key) {
-        return new Response("Not authorized", {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response(JSON.stringify({message: "Not authorized"}), {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    // const session = await auth();
-    // if (!session || !session?.user) {
-    //     return new Response("Not authorized", {
-    //         headers: { "content-type": "application/json" },
-    //         status: 401
-    //     });
-    // }
     const id = context.params.slug;
     const db = client.db("test");
     const col = db.collection("Reviews");
@@ -30,21 +22,13 @@ export async function GET(request: Request, context: { params: any }) {
 
 export async function DELETE(request: Request, context: { params: any }) {
     const client = await clientPromise;
-    const keyCol = client.db("test").collection("Keys");
-    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
-    if (!key) {
-        return new Response("Not authorized", {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response(JSON.stringify({message: "Not authorized"}), {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    // const session = await auth();
-    // if (!session || !session?.user) {
-    //     return new Response("Not authorized", {
-    //         headers: { "content-type": "application/json" },
-    //         status: 401
-    //     });
-    // }
     const id = context.params.slug;
     const db = client.db("test");
     const col = db.collection("Reviews");

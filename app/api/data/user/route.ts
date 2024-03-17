@@ -19,21 +19,13 @@ import { auth } from "@/lib/auth";
 
 export async function GET(request: Request) {
     const client = await clientPromise;
-    const keyCol = client.db("test").collection("Keys");
-    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
-    if (!key) {
-        return new Response("Not authorized", {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response(JSON.stringify({message: "Not authorized"}), {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    // const session = await auth();
-    // if (!session || !session?.user) {
-    //     return new Response("Not authorized", {
-    //         headers: { "content-type": "application/json" },
-    //         status: 401
-    //     });
-    // }
     const db = client.db("test");
     const users = db.collection("Users");
     const user = await users.find().toArray();
@@ -44,21 +36,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     const client = await clientPromise;
-    const keyCol = client.db("test").collection("Keys");
-    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
-    if (!key) {
-        return new Response("Not authorized", {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response(JSON.stringify({message: "Not authorized"}), {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    // const session = await auth();
-    // if (!session || !session?.user) {
-    //     return new Response("Not authorized", {
-    //         headers: { "content-type": "application/json" },
-    //         status: 401
-    //     });
-    // }
     const db = client.db("test");
     const users = db.collection("Users");
     const user = await request.json();
@@ -70,21 +54,13 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
     const client = await clientPromise;
-    const keyCol = client.db("test").collection("Keys");
-    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
-    if (!key) {
-        return new Response("Not authorized", {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response(JSON.stringify({message: "Not authorized"}), {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    // const session = await auth();
-    // if (!session || !session?.user) {
-    //     return new Response("Not authorized", {
-    //         headers: { "content-type": "application/json" },
-    //         status: 401
-    //     });
-    // }
     const db = client.db("test");
     const users = db.collection("Users");
     const user = await request.json();
@@ -96,21 +72,13 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
     const client = await clientPromise;
-    const keyCol = client.db("test").collection("Keys");
-    const key = await keyCol.findOne({ key: request.headers.get("x-api-key") });
-    if (!key) {
-        return new Response("Not authorized", {
+    const session = await auth();
+    if (!session || !session?.user) {
+        return new Response(JSON.stringify({message: "Not authorized"}), {
             headers: { "content-type": "application/json" },
             status: 401
         });
     }
-    // const session = await auth();
-    // if (!session || !session?.user) {
-    //     return new Response("Not authorized", {
-    //         headers: { "content-type": "application/json" },
-    //         status: 401
-    //     });
-    // }
     let db = client.db("test");
     let users = db.collection("Users");
     let user = await request.json();
