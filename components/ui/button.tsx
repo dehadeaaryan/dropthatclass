@@ -1,8 +1,8 @@
+"use client";
 
-
-export default function Button({ children }: { children: React.ReactNode }) {
+export default function Button({ children, onClick=()=>{} }: { children: React.ReactNode, onClick?: () => any }) {
     return (
-        <button className="border hover:bg-white hover:text-black transition-all duration-200 text-white rounded p-2">
+        <button onClick={onClick} className="border hover:bg-white hover:text-black transition-all duration-200 text-white rounded p-2">
             {children}
         </button>
     );

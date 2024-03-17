@@ -1,14 +1,35 @@
 "use client"
 
 import { UserType } from "@/types/user";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import Button from "./ui/button";
 import newUsername from "@/lib/usernameGenerator";
 import universities from '@/data/universities.json'; // Importing options from JSON file
 import { signOut } from "next-auth/react";
 
+function fetchUser(email: string) {
+    return fetch(`/api/data/user/${email}`, {
+        method: "GET",
+    }).then((res) => res.json());
+}
 
-export default function Account({ user }: { user: UserType }) {
+export default function Account({ currentUser }: { currentUser: string }) {
+    const initialUser: UserType = {
+        email: "",
+        username: "",
+        university: "",
+        createdAt: new Date(),
+        image: "",
+        name: "",
+    };
+    const [user, setUser] = useState(initialUser);
+    useEffect(() => {
+        fetchUser(currentUser).then((user) => {
+            setUser(user);
+        });
+        setUsername(user.username);
+        setUniversity(user.university != null ? user.university : "Unknown");
+    }, [currentUser, user.username, user.university]);
     const [username, setUsername] = useState(user.username);
     const [university, setUniversity] = useState(user.university != null ? user.university : "Unknown");
 
@@ -91,7 +112,7 @@ export default function Account({ user }: { user: UserType }) {
                 </div>
                 <div className="flex flex-row gap-4 text-2xl items-center">
                     <label htmlFor="createdAt">With us since: </label>
-                    <p id="createdAt">{user.createdAt ? user.createdAt.getFullYear() : 2024}</p>
+                    <p id="createdAt">{(new Date(user.createdAt)).getFullYear()}</p>
                 </div>
                 <div className="flex flex-row gap-4 text-2xl items-center">
                     <form onSubmit={() => {

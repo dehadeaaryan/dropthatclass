@@ -1,11 +1,13 @@
 import { headers } from 'next/headers'
- 
+import { auth } from '@/lib/auth'
+
 export async function GET(request: Request) {
-  const headersList = headers()
-  const referer = headersList.get('referer')
- 
-  return new Response('Hello, Dropthatclass', {
-    status: 200,
-    headers: { referer: referer as string },
-  })
+    const session = await auth()
+    const headersList = headers()
+    const referer = headersList.get('referer')
+
+    return new Response('Hello, DropThatClass', {
+        status: 200,
+        headers: { referer: referer as string },
+    })
 }
