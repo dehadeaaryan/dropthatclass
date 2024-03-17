@@ -3,12 +3,7 @@
 import { useEffect, useState } from "react";
 import { AddSvg, UserSvg, ReportSvg, LikeSvg, DislikeSvg } from "./svgs";
 import Button from "./ui/button";
-
-function getAllReviews() {
-    return fetch(`/api/data/review`, {
-        method: "GET",
-    }).then((res) => res.json());
-}
+import { getAllReviews } from "@/controllers/review";
 
 export default function Reviews() {
     const [reviews, setReviews] = useState([{
@@ -20,10 +15,14 @@ export default function Reviews() {
         professor: "",
     }]);
     useEffect(() => {
-        getAllReviews().then((reviews) => {
-            setReviews(reviews);
-        });
-    }, []);
+        getAllReviews()
+            .then((reviews) => {
+                setReviews(reviews);
+            })
+            .catch((error) => {
+                console.error("Error fetching reviews:", error);
+            });
+    }, []);    
     return (
         <div className="flex flex-1 flex-col items-center justify-start px-8 py-4 gap-4">
             <div id="reviews-header" className="flex flex-row items-center justify-between w-full">
