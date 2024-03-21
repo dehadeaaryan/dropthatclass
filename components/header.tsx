@@ -12,7 +12,7 @@ let links = [
 export default async function Header() {
     const session = await auth();
     return (
-        <header className="sticky flex items-center justify-between border-b bottom-white gap-12 px-4">
+        <header className="w-full sticky flex items-center justify-between border-b bottom-white gap-12 px-4">
             <div className="flex flex-1 items-center justify-start gap-12">
                 <h1 className="text-4xl font-bold text-center">
                     <Link href={"/"}><Image priority={true} src="/logo.png" alt="DTC" width={100} height={100} /></Link>

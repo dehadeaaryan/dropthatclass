@@ -1,4 +1,6 @@
+import Header from "@/components/header";
 import { LampDemo } from "@/components/lampDemo";
+import Footer from "@/components/footer";
 
 export default async function Home() {
     return (
@@ -11,7 +13,9 @@ export default async function Home() {
                     {`Coming Soon`}
                 </p>
             </div> */}
+            <Header />
             <LampDemo />
+            <Footer />
         </main>
     );
 }
