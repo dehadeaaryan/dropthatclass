@@ -7,7 +7,7 @@ let links = [
 
 export default function Footer() {
     return (
-        <header className="mt-auto flex items-center justify-between border-t top-white gap-12 py-4 px-4">
+        <footer className="w-full mt-auto flex items-center justify-between border-t top-white gap-12 py-4 px-4">
             <p className="">
                 {`${new Date().getFullYear()} DropThatClass`}
             </p>
@@ -20,6 +20,6 @@ export default function Footer() {
                     ))}
                 </ul>
             </div>
-        </header>
+        </footer>
     );
 }
