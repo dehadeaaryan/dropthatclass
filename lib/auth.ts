@@ -88,6 +88,9 @@ export const config = {
         },
         signIn({ user, account, profile, email, credentials }) {
             return true
+        },
+        async redirect({ url, baseUrl }) {
+            return url.startsWith(baseUrl) ? "/" : "/app"
         }
     },
 } satisfies NextAuthConfig
