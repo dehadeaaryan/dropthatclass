@@ -1,24 +1,16 @@
-import Link from "next/link";
+'use client';
 
-let links = [
-    { path: "/privacyPolicy", name: "Privacy Policy" },
-    { path: "/termsOfService", name: "Terms of Service" },
-];
+import Link from "next/link";
 
 export default function Footer() {
     return (
-        <footer className="w-full mt-auto flex items-center justify-between border-t top-white gap-12 py-4 px-4">
+        <footer className="w-full mt-auto flex items-center justify-between gap-12 py-4 px-4 text-lg">
             <p className="">
                 {`${new Date().getFullYear()} DropThatClass`}
             </p>
-            <div className="flex flex-1 items-center justify-end gap-12">
-                <ul className="flex h-full gap-4">
-                    {links.map((link) => (
-                        <li className="" key={link.path}>
-                            <Link href={link.path}>{link.name}</Link>
-                        </li>
-                    ))}
-                </ul>
+            <div className="flex flex-1 items-center justify-end gap-12 text-lg">
+                <Link href="/privacyPolicy">Privacy Policy</Link>
+                <Link href="/termsOfService">Terms of Service</Link>
             </div>
         </footer>
     );
