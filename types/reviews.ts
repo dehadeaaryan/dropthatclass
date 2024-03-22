@@ -1,1 +1,1 @@
-// TODO
+// TODO - Create a type for the review object
