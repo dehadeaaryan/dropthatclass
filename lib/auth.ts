@@ -2,7 +2,6 @@ import NextAuth from "next-auth"
 import type { NextAuthConfig } from "next-auth"
 import GitHub, { GitHubProfile } from "next-auth/providers/github"
 import Google, { GoogleProfile } from "next-auth/providers/google"
-import CredentialsProvider from "next-auth/providers/credentials"
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from "./mongodb"
 
@@ -79,19 +78,7 @@ export const config = {
     //     newUser: "/auth/new-user",
     // },
     callbacks: {
-        authorized({ request, auth }) {
-            // const { pathname } = request.nextUrl
-            // if (pathname === "/about") {
-            //     return !!auth
-            // }
-            return true
-        },
-        signIn({ user, account, profile, email, credentials }) {
-            return true
-        },
-        async redirect({ url, baseUrl }) {
-            return url.startsWith(baseUrl) ? "/" : "/app"
-        }
+        
     },
 } satisfies NextAuthConfig
 
