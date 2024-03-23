@@ -9,6 +9,7 @@ import { ReviewType } from "@/types/reviews";
 import Image from "next/image";
 import { SearchBar } from "./ui/input";
 import Link from "next/link";
+import { AccountModal } from "./modal";
 
 function ReviewCards(reviews: ReviewType[]) {
     return (
@@ -122,6 +123,8 @@ function ReviewCard(review: any, reviews: any, setReviews: any, user: any, setUs
 }
 
 export default function Reviews(u: any) {
+    const [accountModalOpen, setAccountModalOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [user, setUser] = useState<any>(u.user);
     const [reviews, setReviews] = useState([{
         _id: "",
@@ -143,7 +146,7 @@ export default function Reviews(u: any) {
         }).catch((error) => {
             console.error("Error fetching reviews:", error);
         });
-    }, []);
+    }, [user.email]);
     return (
         <div id="reviews-page" className="max-h-screen flex flex-row flex-1 p-4 gap-4 bg-white">
             <div id="sidebar" className="hidden md:flex flex-col justify-between p-4 gap-4 rounded-3xl shadow-[0_0px_24px_12px_rgba(0,0,0,0.3)]">
@@ -177,10 +180,13 @@ export default function Reviews(u: any) {
                         <Link className="md:hidden" href="/"><HamburgerSvg solid={false} /></Link>
                         <h2 className="text-3xl md:text-5xl font-bold text-start">Reviews</h2>
                     </div>
-                    <Link href=""><div id="account" className="flex flex-row items-center gap-2">
-                        <p className="text-lg hidden lg:block">{user.email}</p>
-                        <Image src={user.image} alt={user.name} width={50} height={50} className="rounded-full h-12 w-12" />
-                    </div></Link>
+                    <button onClick={() => setAccountModalOpen(true)}>
+                        <div id="account" className="flex flex-row items-center rounded-full bg-neutral-00 gap-2 p-2 shadow-[inset_0_0px_8px_rgba(0,0,0,0.3)]">
+                            <p className="text-lg hidden lg:block">{user.email}</p>
+                            <Image src={user.image} alt={user.name} width={50} height={50} className="rounded-full h-12 w-12" />
+                        </div>
+                    </button>
+                    <AccountModal isOpen={accountModalOpen} onClose={(e) => { setAccountModalOpen(false) }} user={user} />
                 </div>
                 <div id="reviews" className="basis-11/12 max-h-full w-full overflow-y-scroll flex flex-col gap-2">
                     {
