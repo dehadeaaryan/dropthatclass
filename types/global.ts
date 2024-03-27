@@ -1,4 +1,4 @@
 
 
-export type ClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => void;
-export type ClickHandlerAsync = (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+export type ClickHandler = (event: React.MouseEvent<any>) => void;
+export type ClickHandlerAsync = (event: React.MouseEvent<any>) => Promise<void>;

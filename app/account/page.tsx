@@ -1,7 +1,7 @@
 import { auth, signIn } from "@/lib/auth";
 import { WithId } from "mongodb";
 import { UserType } from "@/types/user";
-import Account from "@/components/account";
+import Account from "@/components/accountOld";
 
 export default async function Page() {
     const session = await auth();
