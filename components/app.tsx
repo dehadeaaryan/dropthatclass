@@ -13,7 +13,7 @@ import { DeleteAccountModal } from "./modal";
 import Account from "./account";
 import { UserType } from "@/types/user";
 import { WithId } from "mongodb";
-import { getSessionUserAccountAction, getUserFromDatabase } from "@/app/actions";
+// import { getSessionUserAccountAction, getUserFromDatabase } from "@/app/actions";
 
 // function ReviewCards(reviews: ReviewType[]) {
 //     return (
