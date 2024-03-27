@@ -1,8 +1,10 @@
+'use client';
+
 import Image from "next/image";
 import Button from "./ui/button";
-
-import { signOutAccountAction, changeUsernameAccountAction, getUserFromDatabase, deleteAccountAction } from "@/app/actions";
-import { useEffect, useState } from "react";
+import { signOutAction } from "@/actions/session";
+import { changeUsernameAccountAction, deleteAccountAction, getUserFromDatabase } from "@/actions/user";
+import { useState } from "react";
 import { UserType } from "@/types/user";
 import { Modal } from "./modal";
 
@@ -21,7 +23,7 @@ export default function Account({ current_user }: { current_user: UserType }) {
                     <div id="account-drop-top" className="flex flex-row items-center justify-between w-full">
                         <h2 className="text-3xl font-bold">Account</h2>
                         <div className="flex flex-row gap-4">
-                            <form action={signOutAccountAction}>
+                            <form action={signOutAction}>
                                 <Button>Sign Out</Button>
                             </form>
                         </div>
@@ -32,7 +34,7 @@ export default function Account({ current_user }: { current_user: UserType }) {
                                 <p className="text-xl font-bold">Username: </p>
                                 <div id="account-drop-bottom-username-control" className="w-full flex flex-row items-center justify-between">
                                     <p className="text-lg">{user.username}</p>
-                                    <Button onClick={async (e) => {
+                                    <Button disabled={buttonDisabled} onClick={async (e) => {
                                         if (buttonDisabled) return;
                                         setButtonDisabled(true);
                                         const updated_user = await changeUsernameAccountAction();
