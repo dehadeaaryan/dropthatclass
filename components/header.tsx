@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { HeaderProps } from "@/types/props";
 import Button from "./ui/button";
 
-export default async function Header(props: HeaderProps): Promise<JSX.Element> {
+export default function Header(props: HeaderProps): JSX.Element {
     const pathName: string = usePathname();
     const isAbout: boolean = pathName === "/about";
     const isContact: boolean = pathName === "/contact";
