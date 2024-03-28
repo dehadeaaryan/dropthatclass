@@ -37,7 +37,7 @@ function MobileAccount({ user, setUser, open, onClose }: { user: UserType, setUs
     const [hiddenDeleteVisible, setHiddenDeleteVisible] = useState<boolean>(false);
     if (open)
         return (
-            <div className={`fixed inset-0 z-50 flex items-start justify-end bg-black bg-opacity-50 ${open ? "" : "hidden"}`} onClick={(e) => { e.target == e.currentTarget && onClose() }} onScroll={(e) => e.preventDefault()}>
+            <div className={`fixed inset-0 z-10 flex items-start justify-end bg-black bg-opacity-50 ${open ? "" : "hidden"}`} onClick={(e) => { e.target == e.currentTarget && onClose() }} onScroll={(e) => e.preventDefault()}>
                 <div id="account-mobile-right" className="bg-white rounded-l-3xl p-4 w-4/5 md:w-auto h-full flex flex-col items-center justify-between gap-10">
                     <div id="account-mobile-top" className="flex flex-col items-center justify-between w-full gap-4">
                         <div id="account-mobile-top-header" className="flex flex-row items-center justify-between w-full">
