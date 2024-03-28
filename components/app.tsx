@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AddSvg, UserSvg, ReportSvg, LikeSvg, DislikeSvg, LeftArrowCircleSvg, InfoSvg, ContactSvg, PrivacySvg, TermsSvg, HamburgerSvg, CrossSvg } from "./svgs";
 import Button from "./ui/button";
 // import { getAllReviews, getReviewById, reportReview, likeReview, dislikeReview, unlikeReview, undislikeReview } from "@/controllers/review";
@@ -126,12 +126,15 @@ import { WithId } from "mongodb";
 //     ) as JSX.Element;
 // }
 
-export default function App({ user }: { user: UserType }) {
-    const [university, setUniversity] = useState("");
-    return (
-        <div id="reviews-page" className="max-h-screen flex flex-row flex-1 p-4 gap-4 bg-white">
-            <div id="sidebar" className="hidden md:flex flex-col justify-between p-4 gap-4 rounded-3xl shadow-[0_0px_24px_12px_rgba(0,0,0,0.3)]">
+function Sidebar({ isOpen, setIsOpen, university, setUniversity }: { isOpen: boolean, setIsOpen: Function, university: string, setUniversity: Dispatch<SetStateAction<string>> }): JSX.Element | null {
+    function SidebarInternal({ isOpen, setIsOpen, university, setUniversity }: { isOpen: boolean, setIsOpen: Function, university: string, setUniversity: Dispatch<SetStateAction<string>> }) {
+        return (
+            <div id="sidebar-internal" className="flex flex-col justify-between flex-1">
                 <div id="sidebar-top" className="flex flex-col gap-4">
+                    <div id="mobile-sidebar-top" className="md:hidden flex flex-row items-center justify-between w-full">
+                        <h2 className="text-3xl font-bold">Menu</h2>
+                        <Button onClick={() => setIsOpen(false)}><CrossSvg solid={true} /></Button>
+                    </div>
                     <div id="logo" className="flex flex-row items-center justify-between w-full">
                         <Link href="/"><Image priority={true} src="/logo.png" alt="DTC" width={100} height={100} className="rounded-lg h-20 w-20" /></Link>
                     </div>
@@ -155,10 +158,36 @@ export default function App({ user }: { user: UserType }) {
                     </ul>
                 </div>
             </div>
+        );
+    }
+    if (isOpen)
+        return (
+            <div id="mobile-sidebar-container" className="z-20 fixed top-0 left-0 w-full h-full bg-white p-4 flex md:hidden">
+                <div id="mobile-sidebar" className="flex-1 flex flex-col gap-4 p-4 shadow-[0_0px_24px_12px_rgba(0,0,0,0.3)] rounded-3xl">
+                    <SidebarInternal isOpen={isOpen} setIsOpen={setIsOpen} university={university} setUniversity={setUniversity} />
+                </div>
+            </div>
+        );
+    else
+        return (
+            <div id="sidebar" className="hidden md:flex flex-col justify-between p-4 gap-4 rounded-3xl shadow-[0_0px_24px_12px_rgba(0,0,0,0.3)]">
+                <SidebarInternal isOpen={isOpen} setIsOpen={setIsOpen} university={university} setUniversity={setUniversity} />
+            </div>
+        );
+}
+
+export default function App({ user }: { user: UserType }) {
+    const [university, setUniversity] = useState<string>("");
+    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+    return (
+        <div id="reviews-page" className="max-h-screen flex flex-row flex-1 p-4 gap-4 bg-white">
+            <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} university={university} setUniversity={setUniversity} />
             <div id="content" className="flex-1 flex flex-col items-center justify-start md:px-8 md:py-4 gap-4">
                 <div id="reviews-header" className="basis-1/12 flex flex-row items-center justify-between w-full">
                     <div id="review-header-left" className="flex flex-row items-center gap-4">
-                        <Link className="md:hidden" href="/"><HamburgerSvg solid={false} /></Link>
+                        <button className="md:hidden" onClick={() => {
+                            setSidebarOpen(!sidebarOpen);
+                        }}><HamburgerSvg solid={false} /></button>
                         <h2 className="text-3xl md:text-5xl font-bold text-start">Reviews</h2>
                     </div>
                     <div id="review-header-right" className="flex flex-row items-center gap-4">
