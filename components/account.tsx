@@ -9,12 +9,36 @@ import { UserType } from "@/types/user";
 import { Modal } from "./modal";
 import { MouseEvent } from "react";
 
+function DeleteButton({ user, buttonDisabled, setButtonDisabled }: { user: UserType, buttonDisabled: boolean, setButtonDisabled: Dispatch<SetStateAction<boolean>> }) {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    return (
+        <div id="delete button" className="flex flex-row items-center justify-center gap-4">
+                            <Button onClick={async () => {
+                                setIsOpen(true);
+                            }}>Delete Account</Button>
+                            <Modal isOpen={isOpen} onClose={() => { setIsOpen(false) }}>
+                                <div id="delete-modal" className="flex flex-col gap-4">
+                                    <h2 className="text-3xl font-bold">Delete Account</h2>
+                                    <p>Are you sure you want to delete your account?</p>
+                                    <Button onClick={async () => {
+                                        if (buttonDisabled) return;
+                                        setButtonDisabled(true);
+                                        await deleteAccountAction(user.email);
+                                        setButtonDisabled(false);
+                                    }}>Confirm</Button>
+                                </div>
+                            </Modal>
+                        </div>
+    )
+}
+
 function MobileAccount({ user, setUser, open, onClose }: { user: UserType, setUser: (value: SetStateAction<UserType>) => void, open: boolean, onClose: (e?: MouseEvent<HTMLDivElement, MouseEvent>) => void }): JSX.Element | null {
     const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
+    const [hiddenDeleteVisible, setHiddenDeleteVisible] = useState<boolean>(false);
     if (open)
         return (
             <div className={`fixed inset-0 z-50 flex items-start justify-end bg-black bg-opacity-50 ${open ? "" : "hidden"}`} onClick={(e) => { e.target == e.currentTarget && onClose() }} onScroll={(e) => e.preventDefault()}>
-                <div id="account-mobile-right" className="bg-white rounded-l-3xl p-4 w-auto h-full flex flex-col items-center justify-between gap-10">
+                <div id="account-mobile-right" className="bg-white rounded-l-3xl p-4 w-4/5 md:w-auto h-full flex flex-col items-center justify-between gap-10">
                     <div id="account-mobile-top" className="flex flex-col items-center justify-between w-full gap-4">
                         <div id="account-mobile-top-header" className="flex flex-row items-center justify-between w-full">
                             <h2 className="text-3xl font-bold">Account</h2>
@@ -24,8 +48,8 @@ function MobileAccount({ user, setUser, open, onClose }: { user: UserType, setUs
                         <p className="text-lg">{user.email}</p>
                     </div>
                     <div id="account-mobile-username" className="flex flex-col items-center gap-4">
-                        <p className="text-xl font-bold">Username</p>
-                        <p className="text-lg">{user.username}</p>
+                        <p className="text-2xl font-bold">Username</p>
+                        <p className="text-xl">{user.username}</p>
                         <Button disabled={buttonDisabled} onClick={async (e) => {
                             if (buttonDisabled) return;
                             setButtonDisabled(true);
@@ -35,11 +59,9 @@ function MobileAccount({ user, setUser, open, onClose }: { user: UserType, setUs
                             setButtonDisabled(false);
                         }}>Change</Button>
                     </div>
-                    <div id="account-mobile-bottom" className="flex flex-row items-center justify-center gap-4">
-                        <Button onClick={async () => { await signOutAction() }}>Sign Out</Button>
-                        <Button onClick={async () => {
-                            await deleteAccountAction(user.email);
-                        }}>Delete Account</Button>
+                    <div id="account-mobile-bottom" className="flex flex-row items-center justify-between gap-4">
+                            <Button onClick={async () => { await signOutAction() }}>Sign Out</Button>
+                            <DeleteButton user={user} buttonDisabled={buttonDisabled} setButtonDisabled={setButtonDisabled} />
                     </div>
                 </div>
             </div>
@@ -88,23 +110,7 @@ export default function Account({ current_user }: { current_user: UserType }) {
                                 </div>
                             </div>
                         </div>
-                        <div id="delete button" className="flex flex-row items-center justify-center gap-4">
-                            <Button onClick={async () => {
-                                setIsOpen(true);
-                            }}>Delete Account</Button>
-                            <Modal isOpen={isOpen} onClose={() => { setIsOpen(false) }}>
-                                <div id="delete-modal" className="flex flex-col gap-4">
-                                    <h2 className="text-3xl font-bold">Delete Account</h2>
-                                    <p>Are you sure you want to delete your account?</p>
-                                    <Button onClick={async () => {
-                                        if (buttonDisabled) return;
-                                        setButtonDisabled(true);
-                                        await deleteAccountAction(user.email);
-                                        setButtonDisabled(false);
-                                    }}>Confirm</Button>
-                                </div>
-                            </Modal>
-                        </div>
+                        <DeleteButton user={user} buttonDisabled={buttonDisabled} setButtonDisabled={setButtonDisabled} />
                     </div>
                 </div>
             </div>

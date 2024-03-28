@@ -12,7 +12,7 @@ export default function Button({
     disabled?: boolean
 }) {
     return (
-        <button disabled={disabled} type="submit" onClick={onClick} className={`border ${disabled ? "bg-neutral-500" : "bg-black"} text-neutral-200 transition-all duration-200 rounded-full py-2 px-4 text-sm`}>
+        <button disabled={disabled} type="submit" onClick={onClick} className={`border ${disabled ? "bg-neutral-500" : "bg-black"} text-neutral-200 transition-all duration-200 rounded-full py-4 md:py-2 px-4 text-lg`}>
             {children}
         </button>
     );
